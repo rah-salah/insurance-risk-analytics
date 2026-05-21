@@ -16,4 +16,4 @@ jobs:
       - name: Install dependencies
         run: pip install pandas numpy matplotlib seaborn scikit-learn scipy pytest
       - name: Run tests
-        run: pytest tests/ -v
+        run: pytest tests/ -v --tb=short
