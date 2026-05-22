@@ -1,6 +1,5 @@
-data/
+data/raw/MachineLearningRating_v3.txt
 *.csv
-data/*.txt
 .venv/
 __pycache__/
 *.pyc
