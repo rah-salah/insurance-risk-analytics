@@ -5,22 +5,39 @@ EDA utility functions for ACIS Insurance Risk Analytics.
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.figure
 import seaborn as sns
+import logging
+from typing import Optional, Tuple, List
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 
-def plot_loss_ratio_by_column(df, column, title=None, figsize=(12, 6)):
+def plot_loss_ratio_by_column(
+    df: pd.DataFrame,
+    column: str,
+    title: Optional[str] = None,
+    figsize: Tuple[int, int] = (12, 6)
+) -> Tuple[Optional[matplotlib.figure.Figure], Optional[pd.DataFrame]]:
     """
     Plot loss ratio grouped by a categorical column.
-    
+
     Args:
-        df: DataFrame with TotalPremium, TotalClaims columns
+        df: DataFrame with TotalPremium and TotalClaims columns
         column: column to group by
         title: chart title
-        figsize: figure size
+        figsize: figure size tuple
+
+    Returns:
+        tuple of (figure, stats DataFrame)
     """
     try:
         df_valid = df[df['TotalPremium'] > 0].copy()
-        
+
         stats = df_valid.groupby(column).agg(
             TotalPremium=('TotalPremium', 'sum'),
             TotalClaims=('TotalClaims', 'sum'),
@@ -46,20 +63,28 @@ def plot_loss_ratio_by_column(df, column, title=None, figsize=(12, 6)):
                     f'{val:.3f}', va='center', fontsize=10)
 
         plt.tight_layout()
+        logger.info(f"Loss ratio plot created for column: {column}")
         return fig, stats
     except Exception as e:
-        print(f"ERROR plotting: {e}")
+        logger.error(f"Error plotting loss ratio: {e}")
         return None, None
 
 
-def plot_outliers(df, columns, figsize=(16, 6)):
+def plot_outliers(
+    df: pd.DataFrame,
+    columns: List[str],
+    figsize: Tuple[int, int] = (16, 6)
+) -> Optional[matplotlib.figure.Figure]:
     """
     Plot box plots to detect outliers in numerical columns.
-    
+
     Args:
-        df: DataFrame
+        df: input DataFrame
         columns: list of column names to plot
-        figsize: figure size
+        figsize: figure size tuple
+
+    Returns:
+        matplotlib Figure object
     """
     try:
         fig, axes = plt.subplots(1, len(columns), figsize=figsize)
@@ -73,26 +98,34 @@ def plot_outliers(df, columns, figsize=(16, 6)):
 
             ax.boxplot(df_clean, vert=True)
             ax.set_title(f'{col}\n(99th percentile)',
-                        fontsize=12, fontweight='bold')
+                         fontsize=12, fontweight='bold')
             ax.set_ylabel('Amount (Rand)')
 
         plt.suptitle('Outlier Detection — Box Plots',
                      fontsize=14, fontweight='bold')
         plt.tight_layout()
+        logger.info(f"Outlier plots created for: {columns}")
         return fig
     except Exception as e:
-        print(f"ERROR plotting outliers: {e}")
+        logger.error(f"Error plotting outliers: {e}")
         return None
 
 
-def plot_correlation_matrix(df, columns, figsize=(10, 8)):
+def plot_correlation_matrix(
+    df: pd.DataFrame,
+    columns: List[str],
+    figsize: Tuple[int, int] = (10, 8)
+) -> Optional[matplotlib.figure.Figure]:
     """
     Plot correlation matrix for numerical columns.
-    
+
     Args:
-        df: DataFrame
+        df: input DataFrame
         columns: list of numerical column names
-        figsize: figure size
+        figsize: figure size tuple
+
+    Returns:
+        matplotlib Figure object
     """
     try:
         corr_data = df[columns].dropna()
@@ -111,7 +144,8 @@ def plot_correlation_matrix(df, columns, figsize=(10, 8)):
         ax.set_title('Correlation Matrix',
                      fontsize=14, fontweight='bold')
         plt.tight_layout()
+        logger.info("Correlation matrix created")
         return fig
     except Exception as e:
-        print(f"ERROR plotting correlation: {e}")
+        logger.error(f"Error plotting correlation matrix: {e}")
         return None
