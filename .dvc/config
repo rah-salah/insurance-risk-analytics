@@ -1,4 +1,6 @@
 [core]
-    remote = localstorage
+    remote = local_remote
 ['remote "localstorage"']
     url = C:/Users/Mube/dvc-storage
+['remote "local_remote"']
+    url = C:/Users/Mube/AppData/Local/Temp/dvc_remote
