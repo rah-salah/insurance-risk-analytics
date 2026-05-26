@@ -77,3 +77,22 @@ pytest tests/ -v
 - 1,000,098 policy transactions
 - Period: October 2013 to August 2015
 - South Africa, 9 provinces
+
+## Reproducing the Data Pipeline
+
+### Pull data with DVC
+```bash
+dvc pull
+```
+
+### Run full pipeline
+```bash
+python scripts/scrape_reviews.py  # Not applicable
+jupyter notebook notebooks/01_eda.ipynb
+jupyter notebook notebooks/02_hypothesis_testing.ipynb
+jupyter notebook notebooks/03_modeling.ipynb
+```
+
+### Data versions tracked
+- v1 Raw: data/raw/MachineLearningRating_v3.txt (1,000,098 rows)
+- v2 Clean: data/processed/clean_insurance.csv (999,805 rows)
