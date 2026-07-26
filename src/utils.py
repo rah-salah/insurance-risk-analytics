@@ -3,7 +3,6 @@ Utility functions for insurance risk analytics pipeline.
 """
 
 import pandas as pd
-import numpy as np
 
 
 def load_data(filepath):
