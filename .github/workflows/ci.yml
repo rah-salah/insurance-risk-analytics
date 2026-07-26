@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, task-1, task-2, task-3, task-4]
+    branches: [main, task-1, task-2, task-3, task-4, capstone]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
@@ -14,6 +16,8 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install pandas numpy matplotlib seaborn scikit-learn scipy pytest
+        run: pip install pandas numpy matplotlib seaborn scikit-learn xgboost shap scipy pytest flake8
+      - name: Lint with flake8
+        run: flake8 src/ tests/ --max-line-length=120 --extend-ignore=E203,W503 --count --statistics
       - name: Run tests
         run: pytest tests/ -v --tb=short

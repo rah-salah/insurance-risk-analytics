@@ -4,7 +4,6 @@ Data loading utilities for ACIS Insurance Risk Analytics.
 
 import pandas as pd
 import logging
-import os
 
 logging.basicConfig(
     level=logging.INFO,
@@ -53,8 +52,6 @@ def get_data_summary(df: pd.DataFrame) -> dict:
     """
     try:
         missing = df.isnull().sum()
-        missing_pct = (missing / len(df) * 100).round(2)
-
         summary = {
             'rows': df.shape[0],
             'columns': df.shape[1],

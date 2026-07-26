@@ -3,7 +3,6 @@ EDA utility functions for ACIS Insurance Risk Analytics.
 """
 
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.figure
 import seaborn as sns
@@ -101,7 +100,7 @@ def plot_outliers(
                          fontsize=12, fontweight='bold')
             ax.set_ylabel('Amount (Rand)')
 
-        plt.suptitle('Outlier Detection — Box Plots',
+        plt.suptitle('Outlier Detection  -  Box Plots',
                      fontsize=14, fontweight='bold')
         plt.tight_layout()
         logger.info(f"Outlier plots created for: {columns}")
